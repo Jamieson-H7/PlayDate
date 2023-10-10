@@ -4,6 +4,7 @@ var dateButton;
 var firstDateInput;
 var parentDiv;
 var dateContainer;
+var isOpen = true;
 
 function init(){
     initInputs = document.getElementsByClassName("dateInputs");
@@ -39,4 +40,15 @@ function dateButtonFunct() {
     newDateInput.classList.add("fadeIn");
     newDateInput.addEventListener('animationend', function(e) {$(newDateInput).removeClass("fadeIn");});
     dateContainer.appendChild(newDateInput);
+}
+
+function toggleMenuState(){
+    if(isOpen){
+        //makeclosed
+    }
+    else{
+        //makeopen
+    }
+    isOpen=!isOpen;
+    console.log(isOpen)
 }
