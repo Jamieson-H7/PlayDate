@@ -14,6 +14,7 @@ function init(){
     dateButton = document.getElementById("addDateButton");
     firstDateInput = document.getElementById("firstDateInput");
     dateContainer = document.getElementById("dateContainer");
+    navMenu = document.getElementById("collapsibleNav");
     parentDiv = firstDateInput.parentNode;
 }
 
@@ -45,9 +46,11 @@ function dateButtonFunct() {
 function toggleMenuState(){
     if(isOpen){
         //makeclosed
+        navMenu.classList.add("closedNav");
     }
     else{
         //makeopen
+        navMenu.classList.remove("closedNav");
     }
     isOpen=!isOpen;
     console.log(isOpen)

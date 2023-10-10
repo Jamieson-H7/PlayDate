@@ -50,6 +50,7 @@ nav {
     width: 3em;
     border-radius: 0 0.75em 0.75em 0;
     height: 30%;
+    transition: height 0.05s cubic-bezier(1,0,1,.21);
 }
 nav .linkContainer{
     height: 70%;
@@ -79,6 +80,16 @@ nav input{
     margin-top: 0.25em;
     margin-bottom: 1em;
 }
+.closedNav *{
+    opacity: 0;
+    transition: opacity 0.5s cubic-bezier(1,-0.01,.97,-0.17);
+}
+
+nav:has(.closedNav){
+    height:2.75em;
+    transition: height 0.5s cubic-bezier(.46,0,.88,.6);
+}
+
 img{
     width: 100%;
 }
@@ -114,7 +125,7 @@ img{
     animation: fadeIn 0.1s cubic-bezier(0, 0, .86, .22) 0s forwards;
 }
 
-input {
+.pageContainer input{
     transition: background-color 0.5s;
     background-color: var(--inputColor);
     border: 0.1em solid var(--inputBorderColor);
@@ -123,12 +134,12 @@ input {
     padding-right: 0.6em;
 }
 
-input:hover {
+.pageContainer input:hover {
     transition: background-color 0.2s;
     background-color: var(--inputHoverColor);
 }
 
-input:focus {
+.pageContainer input:focus {
     transition: background-color 0.2s;
     background-color: var(--inputHoverColor);
 }
