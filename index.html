@@ -1,11 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PlayDate</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="main.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
 </head>
+
 <body>
-    <h> baller </h>
+    <nav>
+        <div class="linkContainer">
+            <a href="index.html">Schedule</a>
+            <a href="/css/">CSS</a>
+            <a href="/js/">JavaScript</a>
+            <a href="/python/">Python</a>
+        </div>
+    </nav>
+    <div class="pageContainer">
+        <h1 style="padding-top: 1em;">Schedule a Meetup</h1>
+        <table>
+            <tr>
+                <td>
+                    <p class="textLabel">Name of Meetup</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text"></input>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="textLabel">Days being Considered</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="dateContainer" class="grid-container">
+                        <input type="date" class="dateInputs" />
+                        <input type="date" class="dateInputs" />
+                        <input type="date" class="dateInputs" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button id="addDateButton" type="button" onclick="dateButtonFunct()">+ Add Date</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br>
 </body>
+
 </html>
