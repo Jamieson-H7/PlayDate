@@ -4,7 +4,7 @@ var dateButton;
 var firstDateInput;
 var parentDiv;
 var dateContainer;
-var isOpen = true;
+var isOpen = false;
 
 function init(){
     initInputs = document.getElementsByClassName("dateInputs");

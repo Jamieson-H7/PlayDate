@@ -76,10 +76,17 @@ nav .linkContainer a:hover{
     color:rgb(130, 130, 101);
 }
 nav input{
+    z-index: 1;
     width: 70%;
     margin-top: 0.25em;
     margin-bottom: 1em;
+    transition: all 0.5s cubic-bezier(.55,0,.55,1);
+    transform: translate(0px, 275px) rotate(90deg);
 }
+nav:has(.closedNav) input{
+    transform: translate(0, 0) rotate(360deg);
+}
+
 .closedNav *{
     opacity: 0;
     transition: opacity 0.5s cubic-bezier(1,-0.01,.97,-0.17);
