@@ -1,25 +1,22 @@
 window.onload = init;
 
 var dateButton;
-var firstDateInput;
-var parentDiv;
 var dateContainer;
 var isOpen = false;
+var navMenu;
 
 function init(){
-    initInputs = document.getElementsByClassName("dateInputs");
-    for(item of initInputs){
+    let initInputs = document.getElementsByClassName("dateInputs");
+    for(var item of initInputs){
         item.min = new Date().toISOString().split("T")[0];
+        item.max = new Date((new Date()).getTime() + (365 * 86400000)).toISOString().split("T")[0];
     }
     dateButton = document.getElementById("addDateButton");
-    firstDateInput = document.getElementById("firstDateInput");
     dateContainer = document.getElementById("dateContainer");
     navMenu = document.getElementById("collapsibleNav");
-    parentDiv = firstDateInput.parentNode;
 }
 
 // dateButton.addEventListener("click", dateButtonFunct);
-
 function dateButtonFunct() {
     // console.log("bruh")
     // newRow = document.createElement("tr");
@@ -37,11 +34,17 @@ function dateButtonFunct() {
     newDateInput = document.createElement("input");
     newDateInput.type = "date";
     newDateInput.min = new Date().toISOString().split("T")[0];
+    newDateInput.max = new Date((new Date()).getTime() + (365 * 86400000)).toISOString().split("T")[0];
     newDateInput.classList.add("dateInputs");
     newDateInput.classList.add("fadeIn");
     newDateInput.addEventListener('animationend', function(e) {$(newDateInput).removeClass("fadeIn");});
     dateContainer.appendChild(newDateInput);
 }
+function removeDateButtonFunct() {
+    if(dateContainer.childElementCount>1)
+        dateContainer.removeChild(dateContainer.lastChild);
+}
+
 
 function toggleMenuState(){
     if(isOpen){

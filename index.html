@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PlayDate</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="main.js"></script>
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-
+    <script defer type="module" src="appStuff.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.css" />
+    <script defer src="main.js"></script>
 </head>
 
 <body>
@@ -33,12 +35,18 @@
             </tr>
             <tr>
                 <td>
-                    <input type="text"></input>
+                    <input id="nameInput" type="text"></input>
                 </td>
             </tr>
             <tr>
                 <td>
                     <p class="textLabel">Days being Considered</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button id="addDateButton" type="button" onclick="dateButtonFunct()">+ Add Date</button>
+                    <button id="addDateButton" type="button" onclick="removeDateButtonFunct()">- Remove Date</button>
                 </td>
             </tr>
             <tr>
@@ -50,12 +58,8 @@
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <button id="addDateButton" type="button" onclick="dateButtonFunct()">+ Add Date</button>
-                </td>
-            </tr>
         </table>
+        <input id="submitDates" type="submit">
     </div>
     <br>
 </body>
