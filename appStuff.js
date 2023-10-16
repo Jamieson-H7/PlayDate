@@ -32,27 +32,27 @@ var userRef;
 
 
 
-signInWithPopup(auth, googleProvider)
-  .then((result) => {
-    // This gives you a Google Access Token. You can use it to access the Google API.
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-    // The signed-in user info.
-    const user = result.user;
-    // IdP data available using getAdditionalUserInfo(result)
-    // ...
-  }).catch((error) => {
-    // Handle Errors here.
-    const errorCode = error.code;
-    console.log(errorCode)
-    const errorMessage = error.message;
-    // The email of the user's account used.
-    const email = error.customData.email;
-    // The AuthCredential type that was used.
-    const credential = GoogleAuthProvider.credentialFromError(error);
-    // ...
-    signInWithRedirect(auth, googleProvider);
-  });
+// signInWithPopup(auth, googleProvider)
+//   .then((result) => {
+//     // This gives you a Google Access Token. You can use it to access the Google API.
+//     const credential = GoogleAuthProvider.credentialFromResult(result);
+//     const token = credential.accessToken;
+//     // The signed-in user info.
+//     const user = result.user;
+//     // IdP data available using getAdditionalUserInfo(result)
+//     // ...
+//   }).catch((error) => {
+//     // Handle Errors here.
+//     const errorCode = error.code;
+//     console.log(errorCode)
+//     const errorMessage = error.message;
+//     // The email of the user's account used.
+//     const email = error.customData.email;
+//     // The AuthCredential type that was used.
+//     const credential = GoogleAuthProvider.credentialFromError(error);
+//     // ...
+//     signInWithRedirect(auth, googleProvider);
+//   });
 
 // signInAnonymously(auth)
 // .then(() => {
@@ -77,7 +77,6 @@ onAuthStateChanged(auth, (user) => {
 });
 
 window.onload = initial();
-window.onload = ()=>{console.log(true)}
 
 function addUserData(data) {
   set(userRef, data);
@@ -86,11 +85,19 @@ function addUserData(data) {
 function initial(){
   let initInputs = document.getElementsByClassName("dateInputs");
   let dateButton = document.getElementById("addDateButton");
-  let dateContainer = document.getElementById("dateContainer");
+  let logoutButton = document.getElementById("logoutButton");
   let nameInput = document.getElementById("nameInput");
   let submitButton = document.getElementById("submitDates");
   console.log(submitButton)
   
+  logoutButton.addEventListener("click", ()=>{
+    signOut(auth).then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+    });
+  })
+
   submitButton.addEventListener("click", ()=>{
     console.log(true)
     console.log(nameInput.value)
