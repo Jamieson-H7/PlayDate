@@ -1,5 +1,4 @@
-window.onload = init;
-
+window.onload = init();
 var dateButton;
 var dateContainer;
 var isOpen = false;
