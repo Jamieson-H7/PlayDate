@@ -140,8 +140,20 @@ function initial() {
       let tempTime = Date.now();
       let temp = {
         dates: datesTemp,
-        creationUser: tempTime,
+        creationTime: tempTime,
       };
+      let temp2 = {
+        eventResponses: {
+          response: "a"
+        }
+      }
+      
+
+
+      // CREATE EVENTS WITH USER INSIDE AND NOT USER THEN EVENTS
+      
+      
+      addUserData(temp2, ref(database, 'events/' + nameInput.value));
       addUserData(temp, ref(database, 'users/' + uid + "/" + nameInput.value));
       window.location = "/main.html#" + tempTime + "-" + nameInput.value;
     });
@@ -152,11 +164,13 @@ function initial() {
     for(let item of checkboxCollection){
       element[item.id] = item.checked;
     }
-    addUserData(element, ref(database, 'users/' + uid + "/" + eventTitle.innerText + "/userResponses/" + uid));
+    addUserData(element, ref(database, 'events/' + winHash.substring(winHash.indexOf("-")+1) + "/eventResponses/" + uid));
   }
   if (winHash != "") {
     const dbRef = ref(database);
     console.warn(`users/${uid}`)
+
+
     get(child(dbRef, `users/${uid}/${winHash.substring(winHash.indexOf("-")+1)}`)).then((snapshot) => {
       console.warn(snapshot.val());
       if (snapshot.exists()) {
@@ -165,8 +179,26 @@ function initial() {
           addCalendarBox(element).addEventListener("click",()=>{
             updateCheckboxes();
           })
-          
         });
+
+      } else {
+        console.log("No data available");
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+
+    get(child(dbRef, `events/${winHash.substring(winHash.indexOf("-")+1)}/eventResponses`)).then((snapshot) => {
+      console.warn(snapshot.val());
+      if (snapshot.exists()) {
+        console.log(snapshot.val()[uid]);
+        for( const item in snapshot.val()[uid] ){
+          document.getElementById(item).checked = snapshot.val()[uid][item];
+        }
+        // snapshot.val()[uid].forEach(element => {
+        //   console.log(element)
+        // });
+        
       } else {
         console.log("No data available");
       }

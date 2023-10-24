@@ -20,9 +20,18 @@ function addCalendarBox(element) {
     pageSubContainer = document.getElementById("pageSubContainer");
     let tempdiv2 = document.createElement("div");
     tempdiv2.classList.add("calenderBox");
-    tempdiv2.innerHTML = `<b>${element}</b><br><input type="checkbox" id="${element}" class="checkboxInput"></input>`;
+    let btag = document.createElement("b");
+    btag.innerText = element;
+    tempdiv2.appendChild(btag);
+    tempdiv2.appendChild(document.createElement("br"));
+    let inputtag = document.createElement("input");
+    inputtag.type = "checkbox";
+    inputtag.id = element;
+    inputtag.classList.add("checkboxInput");
+    tempdiv2.appendChild(inputtag);
+
     pageSubContainer.appendChild(tempdiv2);
-    return tempdiv2.lastChild;
+    return inputtag;
 }
 
 function toggleMenuState() {
