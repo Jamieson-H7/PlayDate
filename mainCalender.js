@@ -1,17 +1,18 @@
 var isOpen = false;
 var pageSubContainer;
 var pageHash;
+var navMenu;
 
 function init() {
+    navMenu = document.getElementById("collapsibleNav");
     pageHash = decodeURI(window.location.hash);
     pageSubContainer = document.getElementById("pageSubContainer");
     pageContainer = document.getElementById("pageContainer");
     dateButton = document.getElementById("addDateButton");
     dateContainer = document.getElementById("dateContainer");
-    navMenu = document.getElementById("collapsibleNav");
     let tempdiv = document.createElement("div");
     tempdiv.innerHTML = "<h1></h1>"
-    tempdiv.firstChild.innerText = pageHash.substring(pageHash.indexOf("-") + 1);
+    tempdiv.firstChild.innerText = pageHash.substring(pageHash.indexOf("-")+1);
     tempdiv.firstChild.id = "eventTitle"
     pageContainer.insertBefore(tempdiv, pageContainer.firstChild);
 }

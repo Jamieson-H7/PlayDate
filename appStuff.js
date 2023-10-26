@@ -43,30 +43,31 @@ var uid;
 //     // ..
 //   });
 
-
-// signInWithPopup(auth, googleProvider)
-//   .then((result) => {
-//     // This gives you a Google Access Token. You can use it to access the Google API.
-//     const credential = GoogleAuthProvider.credentialFromResult(result);
-//     const token = credential.accessToken;
-//     // The signed-in user info.
-//     const user = result.user;
-//     // IdP data available using getAdditionalUserInfo(result)
-//     // ...
-//   }).catch((error) => {
-//     // Handle Errors here.
-//     const errorCode = error.code;
-//     console.log(errorCode)
-//     const errorMessage = error.message;
-//     // The email of the user's account used.
-//     const email = error.customData.email;
-//     // The AuthCredential type that was used.
-//     const credential = GoogleAuthProvider.credentialFromError(error);
-//     // ...
-//     signInWithRedirect(auth, googleProvider);
-//   });
-
-signInAnonymously(auth)
+function popUpSignIn(){
+  signInWithPopup(auth, googleProvider)
+    .then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      // const credential = GoogleAuthProvider.credentialFromResult(result);
+      // const token = credential.accessToken;
+      // The signed-in user info.
+      //const user = result.user;
+      // IdP data available using getAdditionalUserInfo(result)
+      // ...
+    }).catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      console.log(errorCode)
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      // ...
+      signInWithRedirect(auth, googleProvider);
+    });
+}
+if(window.location.pathname.indexOf("index.html")==-1){
+  signInAnonymously(auth)
   .then(() => {
     // Signed in..
   })
@@ -75,6 +76,14 @@ signInAnonymously(auth)
     const errorMessage = error.message;
     // ...
   });
+}
+if(window.location.pathname.indexOf("main.html")==-1){
+  signOut(auth).then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+    });
+}
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
@@ -84,9 +93,22 @@ onAuthStateChanged(auth, (user) => {
     console.error(uid)
     userRef = ref(database, 'users/' + uid);
     initial()
+    try {
+      init();
+    }
+    catch {
+      //lol
+    }
   } else {
+    //alert("Bruh u signed out dumbass")
     // User is signed out
     // ...
+    try {
+      init();
+    }
+    catch {
+      //lol
+    }
   }
 });
 
@@ -100,12 +122,6 @@ function addUserData(data, insertRef = null) {
 }
 
 function initial() {
-  try {
-    init();
-  }
-  catch {
-    //lol
-  }
   let initInputs = document.getElementsByClassName("dateInputs");
   let dateButton = document.getElementById("addDateButton");
   let logoutButton = document.getElementById("logoutButton");
@@ -116,11 +132,12 @@ function initial() {
   console.log(submitButton)
 
   logoutButton.addEventListener("click", () => {
-    signOut(auth).then(() => {
-      // Sign-out successful.
-    }).catch((error) => {
-      // An error happened.
-    });
+    popUpSignIn()
+    // signOut(auth).then(() => {
+    //   // Sign-out successful.
+    // }).catch((error) => {
+    //   // An error happened.
+    // });
   })
   if (submitButton != null) {
     submitButton.addEventListener("click", () => {
@@ -154,27 +171,28 @@ function initial() {
       // CREATE EVENTS WITH USER INSIDE AND NOT USER THEN EVENTS
       
       
-      addUserData(temp2, ref(database, 'events/' + nameInput.value));
-      addUserData(temp, ref(database, 'users/' + uid + "/" + nameInput.value));
+      addUserData(temp2, ref(database, 'events/' + uid + "-" + nameInput.value));
+      // addUserData(temp, ref(database, 'users/' + uid + "/" + nameInput.value));
       
-      window.location.hash = tempTime + "-" + nameInput.value
-      window.location.pathname = "main.html";
+      window.location.hash = uid + "-" + nameInput.value
+      window.location.pathname = window.location.pathname.replace("index.html", "") + "main.html";
     });
   }
   let winHash = window.location.hash;
+  let decodedURI = decodeURI(winHash.replace("#", ""));
   function updateCheckboxes(){
     let element = {}
     for(let item of checkboxCollection){
       element[item.id] = item.checked;
     }
-    addUserData(element, ref(database, 'events/' + winHash.substring(winHash.indexOf("-")+1) + "/eventResponses/" + uid));
+    addUserData(element, ref(database, 'events/' + decodedURI + "/eventResponses/" + uid));
   }
   if (winHash != "") {
     const dbRef = ref(database);
-    console.warn(`users/${uid}`)
+    console.warn(`events/${decodedURI}`)
 
-    //`users/${uid}/${winHash.substring(winHash.indexOf("-")+1)}`
-    get(child(dbRef, `events/${winHash.substring(winHash.indexOf("-")+1)}`)).then((snapshot) => {
+    //`users/${uid}/${decodedURI}`
+    get(child(dbRef, `events/${decodedURI}`)).then((snapshot) => {
       console.warn(snapshot.val());
       if (snapshot.exists()) {
         console.log(snapshot.val());
@@ -191,7 +209,7 @@ function initial() {
       console.error(error);
     });
 
-    get(child(dbRef, `events/${winHash.substring(winHash.indexOf("-")+1)}/eventResponses`)).then((snapshot) => {
+    get(child(dbRef, `events/${decodedURI}/eventResponses`)).then((snapshot) => {
       console.warn(snapshot.val());
       if (snapshot.exists()) {
         console.log(snapshot.val()[uid]);
