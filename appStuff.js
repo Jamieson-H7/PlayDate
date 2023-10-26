@@ -66,17 +66,6 @@ function popUpSignIn(){
       signInWithRedirect(auth, googleProvider);
     });
 }
-if(window.location.pathname.indexOf("index.html")==-1){
-  signInAnonymously(auth)
-  .then(() => {
-    // Signed in..
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // ...
-  });
-}
 if(window.location.pathname.indexOf("main.html")==-1){
   signOut(auth).then(() => {
       // Sign-out successful.
@@ -103,6 +92,17 @@ onAuthStateChanged(auth, (user) => {
     //alert("Bruh u signed out dumbass")
     // User is signed out
     // ...
+    if(window.location.pathname.indexOf("index.html")==-1){
+      signInAnonymously(auth)
+      .then(() => {
+        // Signed in..
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ...
+      });
+    }
     try {
       init();
     }
@@ -161,21 +161,25 @@ function initial() {
       };
       let temp2 = {
         eventResponses: {
-          response: "a"
+          undefined: {
+            "1900-01-01": true
+          },
         },
         dates: datesTemp,
+        anonAllowed: true,
       }
       
 
 
       // CREATE EVENTS WITH USER INSIDE AND NOT USER THEN EVENTS
       
-      
+      console.warn(temp2);
+      console.warn('events/' + uid + "-" + nameInput.value);
       addUserData(temp2, ref(database, 'events/' + uid + "-" + nameInput.value));
       // addUserData(temp, ref(database, 'users/' + uid + "/" + nameInput.value));
       
-      window.location.hash = uid + "-" + nameInput.value
-      window.location.pathname = window.location.pathname.replace("index.html", "") + "main.html";
+      //window.location.hash = uid + "-" + nameInput.value
+      //window.location.pathname = window.location.pathname.replace("index.html", "") + "main.html";
     });
   }
   let winHash = window.location.hash;
@@ -185,6 +189,8 @@ function initial() {
     for(let item of checkboxCollection){
       element[item.id] = item.checked;
     }
+    console.log(element)
+    console.log('events/' + decodedURI + "/eventResponses/" + uid)
     addUserData(element, ref(database, 'events/' + decodedURI + "/eventResponses/" + uid));
   }
   if (winHash != "") {
