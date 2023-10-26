@@ -13,6 +13,8 @@ function init(){
     dateButton = document.getElementById("addDateButton");
     dateContainer = document.getElementById("dateContainer");
     navMenu = document.getElementById("collapsibleNav");
+    
+    window.location.hash = "";
 }
 
 // dateButton.addEventListener("click", dateButtonFunct);

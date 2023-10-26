@@ -155,7 +155,9 @@ function initial() {
       
       addUserData(temp2, ref(database, 'events/' + nameInput.value));
       addUserData(temp, ref(database, 'users/' + uid + "/" + nameInput.value));
-      window.location = location.pathname + "main.html#" + tempTime + "-" + nameInput.value;
+      
+      window.location.hash = tempTime + "-" + nameInput.value
+      window.location.pathname = "main.html";
     });
   }
   let winHash = window.location.hash;
