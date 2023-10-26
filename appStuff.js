@@ -145,7 +145,8 @@ function initial() {
       let temp2 = {
         eventResponses: {
           response: "a"
-        }
+        },
+        dates: datesTemp,
       }
       
 
@@ -172,8 +173,8 @@ function initial() {
     const dbRef = ref(database);
     console.warn(`users/${uid}`)
 
-
-    get(child(dbRef, `users/${uid}/${winHash.substring(winHash.indexOf("-")+1)}`)).then((snapshot) => {
+    //`users/${uid}/${winHash.substring(winHash.indexOf("-")+1)}`
+    get(child(dbRef, `events/${winHash.substring(winHash.indexOf("-")+1)}`)).then((snapshot) => {
       console.warn(snapshot.val());
       if (snapshot.exists()) {
         console.log(snapshot.val());
