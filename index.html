@@ -16,12 +16,12 @@
 <body>
     <nav>
         <div class="linkContainer">
-            <input type="image" src="menu.png" name="saveForm" onclick="toggleMenuState()" />
+            <input type="image" src="/icons/menu.png" name="saveForm" onclick="toggleMenuState()" />
             <div id="collapsibleNav" class="closedNav">
-                <a href="index.html"><img width="70" src="homepage.png" alt="Schedule"></a>
-                <a id="logoutButton"><img width="50" src="logoutButton.png" alt="Schedule"></a>
-                <!-- <a href="/css/">CSS</a>
-                <a href="/js/">JavaScript</a>
+                <a href="index.html"><img style="width: 100%; filter: invert(100%) sepia(41%) saturate(2%) hue-rotate(130deg) brightness(110%) contrast(101%);" src="icons/home.svg" alt="Schedule"></a>
+                <a id="loginButton"><img id="loginImg" style="display: inherit; width: 100%; filter: invert(100%) sepia(41%) saturate(2%) hue-rotate(130deg) brightness(110%) contrast(101%);" src="icons/login.svg" alt="loginButton"></a>
+                <a id="logoutButton"><img id="logoutImg" style="display: inherit; width: 100%; filter: invert(100%) sepia(41%) saturate(2%) hue-rotate(130deg) brightness(110%) contrast(101%);" src="icons/logout.svg" alt="logoutButton"></a>
+                <!-- <a href="/js/">JavaScript</a>
                 <a href="/python/">Python</a> -->
             </div>
         </div>
@@ -56,6 +56,14 @@
                         <input type="date" class="dateInputs" />
                         <input type="date" class="dateInputs" />
                         <input type="date" class="dateInputs" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="checkbox-container">
+                        <input id="anonCheck" type="checkbox" class="textLabel"/>
+                        <label>Allow anonymous responses?</label>
                     </div>
                 </td>
             </tr>
