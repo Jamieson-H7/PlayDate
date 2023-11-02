@@ -283,7 +283,7 @@ function initiate() {
               console.log(key2);
               console.log(value2);
               if(results[key2]){
-                results[key2].innerText = parseInt(results[key2].innerText) + value2 ? 1 : 0;
+                results[key2].innerText = parseInt(results[key2].innerText) + (value2 ? 1 : 0);
               }
             }
           }
