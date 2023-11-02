@@ -35,6 +35,24 @@ function addCalendarBox(element) {
     return inputtag;
 }
 
+function addCalendarResultBox(element) {
+    pageSubContainer = document.getElementById("pageSubContainer");
+    let tempdiv2 = document.createElement("div");
+    tempdiv2.classList.add("calenderBox");
+    let btag = document.createElement("b");
+    btag.innerText = element;
+    tempdiv2.appendChild(btag);
+    tempdiv2.appendChild(document.createElement("br"));
+    let resultText = document.createElement("p");
+    resultText.innerText = 0;
+    resultText.id = element;
+    resultText.classList.add("dateResult");
+    tempdiv2.appendChild(resultText);
+
+    pageSubContainer.appendChild(tempdiv2);
+    return resultText;
+}
+
 function toggleMenuState() {
     if (isOpen) {
         //makeclosed

@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js";
 import { getDatabase, ref, set, child, get } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
-import { getAuth, signInAnonymously, onAuthStateChanged, signInWithPopup, signInWithRedirect, GoogleAuthProvider, signOut, createUserWithEmailAndPassword, setPersistence, inMemoryPersistence} from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+import { getAuth, signInAnonymously, onAuthStateChanged, signInWithPopup, signInWithRedirect, GoogleAuthProvider, signOut, createUserWithEmailAndPassword, setPersistence, inMemoryPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -44,8 +44,9 @@ var signedIn;
 //     // ..
 //   });
 
-function popUpSignIn(){
-  signInWithPopup(auth, googleProvider)
+function popUpSignIn() {
+  setPersistence(auth, browserLocalPersistence).then(() => {
+    return signInWithPopup(auth, googleProvider)
     .then((result) => {
       // This gives you a Google Access Token. You can use it to access the Google API.
       // const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -64,15 +65,16 @@ function popUpSignIn(){
       // The AuthCredential type that was used.
       const credential = GoogleAuthProvider.credentialFromError(error);
       // ...
-      signInWithRedirect(auth, googleProvider);
+      return signInWithRedirect(auth, googleProvider);
     });
+  })
 }
-if(window.location.pathname.indexOf("main.html")==-1){
+if (window.location.pathname.indexOf("main.html") == -1) {
   signOut(auth).then(() => {
-      // Sign-out successful.
-    }).catch((error) => {
-      // An error happened.
-    });
+    // Sign-out successful.
+  }).catch((error) => {
+    // An error happened.
+  });
 }
 
 onAuthStateChanged(auth, (user) => {
@@ -109,18 +111,24 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-function addUserData(data, insertRef = null) {
+async function addUserData(data, insertRef = null) {
   if (insertRef == null) {
-    set(userRef, data);
+    await set(userRef, data).catch((error)=>{
+      console.error(error)
+      return error.code;
+    });
   }
   else {
-    set(insertRef, data);
+    await set(insertRef, data).catch((error)=>{
+      console.error(error.code=="PERMISSION_DENIED")
+      return error.code;
+    });
   }
 }
 
 window.onload = initBetter()
 
-function initBetter(){
+function initBetter() {
   try {
     init();
   }
@@ -137,7 +145,7 @@ function initBetter(){
       // An error happened.
     });
   })
-  
+
   let loginButton = document.getElementById("loginButton");
   loginButton.addEventListener("click", () => {
     popUpSignIn();
@@ -153,18 +161,18 @@ function initBetter(){
       console.warn(snapshot.val());
       if (snapshot.exists()) {
         console.log(snapshot.val());
-        if (snapshot.val().anonAllowed && signedIn==false) {
+        if (snapshot.val().anonAllowed && signedIn == false) {
           setPersistence(auth, inMemoryPersistence).then(() => {
             return signInAnonymously(auth)
-            .then(() => {
-              // Signed in..
-            })
-            .catch((error) => {
-              const errorCode = error.code;
-              const errorMessage = error.message;
-              console.error(errorMessage)
-              // ...
-            });
+              .then(() => {
+                // Signed in..
+              })
+              .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.error(errorMessage)
+                // ...
+              });
           })
         }
       } else {
@@ -174,8 +182,8 @@ function initBetter(){
       console.error(error);
     });
   }
-  if(!signedIn){
-    
+  if (!signedIn) {
+
   }
 }
 
@@ -218,65 +226,69 @@ function initiate() {
         dates: datesTemp,
         anonAllowed: anonCheck.checked,
       }
-      
+
 
 
       // CREATE EVENTS WITH USER INSIDE AND NOT USER THEN EVENTS
-      
+
       console.warn(temp2);
       console.warn('events/' + uid + "-" + nameInput.value);
       addUserData(temp2, ref(database, 'events/' + uid + "-" + nameInput.value));
       // addUserData(temp, ref(database, 'users/' + uid + "/" + nameInput.value));
-      
+
       window.location.hash = uid + "-" + nameInput.value
       window.location.pathname = window.location.pathname.replace("index.html", "") + "main.html";
     });
   }
   let winHash = window.location.hash;
   let decodedURI = decodeURI(winHash.replace("#", ""));
-  function updateCheckboxes(){
+  function updateCheckboxes() {
     let element = {}
-    for(let item of checkboxCollection){
+    for (let item of checkboxCollection) {
       element[item.id] = item.checked;
     }
     console.log(element)
     console.log('events/' + decodedURI + "/eventResponses/" + uid)
-    addUserData(element, ref(database, 'events/' + decodedURI + "/eventResponses/" + uid));
+    let error = addUserData(element, ref(database, 'events/' + decodedURI + "/eventResponses/" + uid));
+    return error;
   }
-  if (window.location.pathname.indexOf("index.html")==-1 && winHash != "") {
+  if (window.location.pathname.indexOf("index.html") == -1 && winHash != "") {
     const dbRef = ref(database);
     console.warn(`events/${decodedURI}`)
-    //`users/${uid}/${decodedURI}`
+    if(uid == decodedURI.split("-")[0]){
+      console.warn("lmao") //
+    }
+    console.log(uid)
+    
+
     get(child(dbRef, `events/${decodedURI}`)).then((snapshot) => {
       console.warn(snapshot.val());
       if (snapshot.exists()) {
         console.log(snapshot.val());
-        if(snapshot.val().anonAllowed){
-          signInAnonymously(auth)
-          .then(() => {
-            // Signed in..
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // ...
-          });
-        }
-      } else {
-        console.log("No data available");
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
-    get(child(dbRef, `events/${decodedURI}`)).then((snapshot) => {
-      console.warn(snapshot.val());
-      if (snapshot.exists()) {
-        console.log(snapshot.val());
-        snapshot.val().dates.forEach(element => {
-          addCalendarBox(element).addEventListener("click",()=>{
-            updateCheckboxes();
-          })
+        snapshot.val().dates.forEach(date => {
+          if(!(uid == decodedURI.split("-")[0])){
+            addCalendarBox(date).addEventListener("click", () => {
+              updateCheckboxes();
+            })
+          }
         });
+        if ((uid == decodedURI.split("-")[0])) {
+          let results = {}
+          snapshot.val().dates.forEach(date => {
+            results[date] = addCalendarResultBox(date);
+          });
+          console.log(snapshot.val().eventResponses)
+          for (let [key, value] of Object.entries(snapshot.val().eventResponses)) {
+            for (let [key2, value2] of Object.entries(value)) {
+              console.log(key2);
+              console.log(value2);
+              if(results[key2]){
+                results[key2].innerText = parseInt(results[key2].innerText) + value2 ? 1 : 0;
+              }
+            }
+          }
+          console.warn(results)
+        }
 
       } else {
         console.log("No data available");
@@ -289,13 +301,13 @@ function initiate() {
       console.warn(snapshot.val());
       if (snapshot.exists()) {
         console.log(snapshot.val()[uid]);
-        for( const item in snapshot.val()[uid] ){
+        for (const item in snapshot.val()[uid]) {
           document.getElementById(item).checked = snapshot.val()[uid][item];
         }
         // snapshot.val()[uid].forEach(element => {
         //   console.log(element)
         // });
-        
+
       } else {
         console.log("No data available");
       }
