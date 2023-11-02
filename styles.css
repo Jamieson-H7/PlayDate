@@ -5,8 +5,16 @@
     --bgColor: rgb(57, 65, 86);
     --bgColor2: rgb(87, 95, 156);
     --inputColor: rgb(124, 116, 142);
+    --inputColorDisabled: rgb(150, 49, 49);
     --inputHoverColor: rgb(109, 96, 139);
     --inputBorderColor: rgb(55, 44, 82);
+}
+
+.pageContainer input:disabled{
+    background-color: var(--inputColorDisabled);
+}
+.pageContainer input:disabled:hover{
+    background-color: var(--inputColorDisabled);
 }
 
 h1{

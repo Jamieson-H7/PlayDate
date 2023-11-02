@@ -31,6 +31,7 @@ googleProvider.setCustomParameters({
 var userRef;
 var uid;
 var signedIn;
+var submitButton;
 
 // createUserWithEmailAndPassword(auth, prompt("email"), prompt("password"))
 //   .then((userCredential) => {
@@ -55,6 +56,9 @@ function popUpSignIn() {
       //const user = result.user;
       // IdP data available using getAdditionalUserInfo(result)
       // ...
+      if(!(window.location.pathname.indexOf("index.html") == -1)){
+        location.reload();
+      }
     }).catch((error) => {
       // Handle Errors here.
       const errorCode = error.code;
@@ -89,6 +93,10 @@ onAuthStateChanged(auth, (user) => {
     // console.error(uid)
     // userRef = ref(database, 'users/' + uid);
     initiate()
+    if(submitButton){
+      submitButton.disabled = false;
+      submitButton.title="Click to create event!"
+    }
     try {
       loginImg.style.display = "none"
       logoutImg.style.display = "inherit"
@@ -98,6 +106,10 @@ onAuthStateChanged(auth, (user) => {
     }
   } else {
     signedIn = false;
+    if(submitButton){
+      submitButton.disabled = true;
+      submitButton.title="Login to enable submission."
+    }
     //alert("Bruh u signed out dumbass")
     // User is signed out
     // ...
@@ -192,7 +204,7 @@ function initiate() {
   let dateButton = document.getElementById("addDateButton");
   let logoutButton = document.getElementById("logoutButton");
   let nameInput = document.getElementById("nameInput");
-  let submitButton = document.getElementById("submitDates");
+  submitButton = document.getElementById("submitDates");
   let eventTitle = document.getElementById("eventTitle");
   let checkboxCollection = document.getElementsByClassName("checkboxInput");
   let anonCheck = document.getElementById("anonCheck");
@@ -235,9 +247,14 @@ function initiate() {
       console.warn('events/' + uid + "-" + nameInput.value);
       addUserData(temp2, ref(database, 'events/' + uid + "-" + nameInput.value));
       // addUserData(temp, ref(database, 'users/' + uid + "/" + nameInput.value));
-
-      window.location.hash = uid + "-" + nameInput.value
-      window.location.pathname = window.location.pathname.replace("index.html", "") + "main.html";
+      
+      // let metaDiv = document.createElement("div");
+      // metaDiv.innerHTML = `<meta http-equiv="refresh" content="3; URL=https://www.yoururl.com/newpage" />`;
+      // document.getElementById("headElement").appendChild(metaDiv);
+      setTimeout(function () {
+        window.location.hash = uid + "-" + nameInput.value
+        window.location.pathname = window.location.pathname.replace("index.html", "") + "main.html";
+      }, 2000);
     });
   }
   let winHash = window.location.hash;
