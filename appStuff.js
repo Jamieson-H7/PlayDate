@@ -259,6 +259,7 @@ function initiate() {
   }
   let winHash = window.location.hash;
   let decodedURI = decodeURI(winHash.replace("#", ""));
+
   function updateCheckboxes() {
     let element = {}
     for (let item of checkboxCollection) {
@@ -269,6 +270,7 @@ function initiate() {
     let error = addUserData(element, ref(database, 'events/' + decodedURI + "/eventResponses/" + uid));
     return error;
   }
+
   if (window.location.pathname.indexOf("index.html") == -1 && winHash != "") {
     const dbRef = ref(database);
     console.warn(`events/${decodedURI}`)
@@ -281,6 +283,11 @@ function initiate() {
     get(child(dbRef, `events/${decodedURI}`)).then((snapshot) => {
       console.warn(snapshot.val());
       if (snapshot.exists()) {
+        pageSubContainer = document.getElementById("pageSubContainer");
+        if (pageSubContainer.innerHTML != "") {
+          window.location.reload();
+          throw "Event container had events";
+        }
         console.log(snapshot.val());
         snapshot.val().dates.forEach(date => {
           if(!(uid == decodedURI.split("-")[0])){
