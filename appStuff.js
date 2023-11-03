@@ -64,7 +64,6 @@ function popUpSignIn() {
         //const user = result.user;
         // IdP data available using getAdditionalUserInfo(result)
         // ...
-        document.getElementById("meetupHeader").innerText = result + "\n" + result.user;
         if(!(window.location.pathname.indexOf("index.html") == -1)){
           location.reload();
         }
@@ -78,9 +77,7 @@ function popUpSignIn() {
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
-        return signInWithRedirect(auth, googleProvider).then((result) => {
-          document.getElementById("meetupHeader").innerText = result + "\n" + result.user;
-        });
+        return signInWithRedirect(auth, googleProvider);
       });
     }
     else{
@@ -92,7 +89,7 @@ function popUpSignIn() {
         //const user = result.user;
         // IdP data available using getAdditionalUserInfo(result)
         // ...
-        document.getElementById("meetupHeader").innerText = result + "\n" + result.user;
+        document.getElementById("mobileDebug").innerText += " " + result + "\n" + result.user;
       }).catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
@@ -103,6 +100,7 @@ function popUpSignIn() {
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
+        document.getElementById("mobileDebug").innerText += " " + error.code + " | " + error.message
       });;
     }
   })
