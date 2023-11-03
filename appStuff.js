@@ -89,7 +89,7 @@ function popUpSignIn() {
         //const user = result.user;
         // IdP data available using getAdditionalUserInfo(result)
         // ...
-        alert(result)
+        document.getElementById("meetupHeader").innerText = result + "\n" + result.user;
       }).catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
