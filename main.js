@@ -6,9 +6,22 @@ var navMenu;
 
 function init(){
     let initInputs = document.getElementsByClassName("dateInputs");
+    let index = 0;
     for(var item of initInputs){
         item.min = new Date().toISOString().split("T")[0];
         item.max = new Date((new Date()).getTime() + (365 * 86400000)).toISOString().split("T")[0];
+        item.id = index
+        item.addEventListener("change", (e)=>{
+            if (new Date(e.target.value).getTime() < new Date(e.target.min).getTime() || new Date(e.target.value).getTime() > new Date(e.target.max).getTime()) {
+                var now = new Date();
+                var day = ("0" + now.getDate()).slice(-2);
+                var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+                var today = now.getFullYear() + "-" + (month) + "-" + (day);
+                e.target.value = today;
+            }
+        })
+        index++;
     }
     dateButton = document.getElementById("addDateButton");
     dateContainer = document.getElementById("dateContainer");
