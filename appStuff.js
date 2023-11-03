@@ -32,6 +32,7 @@ var userRef;
 var uid;
 var signedIn;
 var submitButton;
+var signedOutMessage;
 
 // createUserWithEmailAndPassword(auth, prompt("email"), prompt("password"))
 //   .then((userCredential) => {
@@ -186,6 +187,18 @@ function initBetter() {
                 // ...
               });
           })
+        }
+        else{
+          if(!signedIn){
+            let divTemp = document.createElement("div");
+            divTemp.classList.add("pageSubContainer")
+            let pTemp = document.createElement("p");
+            pTemp.classList.add("trySignIn");
+            pTemp.innerText = "↖ This event requires a google sign in, try signing in inside the nav menu!"
+            divTemp.appendChild(pTemp);
+            signedOutMessage = divTemp;
+            document.getElementById("eventTitle").after(divTemp);
+          }
         }
       } else {
         // console.log("No data available");
