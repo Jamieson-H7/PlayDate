@@ -64,6 +64,7 @@ function popUpSignIn() {
         //const user = result.user;
         // IdP data available using getAdditionalUserInfo(result)
         // ...
+        document.getElementById("meetupHeader").innerText = result + "\n" + result.user;
         if(!(window.location.pathname.indexOf("index.html") == -1)){
           location.reload();
         }
@@ -77,7 +78,9 @@ function popUpSignIn() {
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
-        return signInWithRedirect(auth, googleProvider);
+        return signInWithRedirect(auth, googleProvider).then((result) => {
+          document.getElementById("meetupHeader").innerText = result + "\n" + result.user;
+        });
       });
     }
     else{
