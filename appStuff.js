@@ -62,7 +62,7 @@ function popUpSignIn() {
     }).catch((error) => {
       // Handle Errors here.
       const errorCode = error.code;
-      console.log(errorCode)
+      // console.log(errorCode)
       const errorMessage = error.message;
       // The email of the user's account used.
       const email = error.customData.email;
@@ -84,7 +84,7 @@ if (window.location.pathname.indexOf("main.html") == -1) {
 onAuthStateChanged(auth, (user) => {
   let loginImg = document.getElementById("loginImg");
   let logoutImg = document.getElementById("logoutImg");
-  console.error(user)
+  //console.error(user)
   if (user) {
     // User is signed in, see docs for a list of available properties
     // https://firebase.google.com/docs/reference/js/auth.user
@@ -126,7 +126,7 @@ onAuthStateChanged(auth, (user) => {
 async function addUserData(data, insertRef = null) {
   if (insertRef == null) {
     await set(userRef, data).catch((error)=>{
-      console.error(error)
+      console.error(error.code)
       return error.code;
     });
   }
@@ -145,10 +145,10 @@ function initBetter() {
     init();
   }
   catch {
-    console.error("init donezo")
+    console.error("Init() Failed")
   }
   let logoutButton = document.getElementById("logoutButton");
-  console.log(logoutButton)
+  // console.log(logoutButton)
   logoutButton.addEventListener("click", () => {
     signOut(auth).then(() => {
       // Sign-out successful.
@@ -167,12 +167,12 @@ function initBetter() {
   let decodedURI = decodeURI(winHash.replace("#", ""));
   if (window.location.pathname.indexOf("index.html") == -1 && winHash != "") {
     const dbRef = ref(database);
-    console.warn(`events/${decodedURI}`)
+    // console.warn(`events/${decodedURI}`)
     //`users/${uid}/${decodedURI}`
     get(child(dbRef, `events/${decodedURI}`)).then((snapshot) => {
-      console.warn(snapshot.val());
+      // console.warn(snapshot.val());
       if (snapshot.exists()) {
-        console.log(snapshot.val());
+        // console.log(snapshot.val());
         if (snapshot.val().anonAllowed && signedIn == false) {
           setPersistence(auth, inMemoryPersistence).then(() => {
             return signInAnonymously(auth)
@@ -188,7 +188,7 @@ function initBetter() {
           })
         }
       } else {
-        console.log("No data available");
+        // console.log("No data available");
       }
     }).catch((error) => {
       console.error(error);
@@ -208,17 +208,17 @@ function initiate() {
   let eventTitle = document.getElementById("eventTitle");
   let checkboxCollection = document.getElementsByClassName("checkboxInput");
   let anonCheck = document.getElementById("anonCheck");
-  console.log(submitButton)
+  // console.log(submitButton)
   if (submitButton != null) {
     submitButton.addEventListener("click", () => {
-      console.log(true)
-      console.log(nameInput.value)
+      // console.log(true)
+      // console.log(nameInput.value)
       if (nameInput.value == "") {
         return
       }
       let datesTemp = []
       for (let item of initInputs) {
-        console.log(item.value)
+        // console.log(item.value)
         if (item.value == '') {
           return;
         }
@@ -243,8 +243,8 @@ function initiate() {
 
       // CREATE EVENTS WITH USER INSIDE AND NOT USER THEN EVENTS
 
-      console.warn(temp2);
-      console.warn('events/' + uid + "-" + nameInput.value);
+      // console.warn(temp2);
+      // console.warn('events/' + uid + "-" + nameInput.value);
       addUserData(temp2, ref(database, 'events/' + uid + "-" + nameInput.value));
       // addUserData(temp, ref(database, 'users/' + uid + "/" + nameInput.value));
       
@@ -265,30 +265,30 @@ function initiate() {
     for (let item of checkboxCollection) {
       element[item.id] = item.checked;
     }
-    console.log(element)
-    console.log('events/' + decodedURI + "/eventResponses/" + uid)
+    // console.log(element)
+    // console.log('events/' + decodedURI + "/eventResponses/" + uid)
     let error = addUserData(element, ref(database, 'events/' + decodedURI + "/eventResponses/" + uid));
     return error;
   }
 
   if (window.location.pathname.indexOf("index.html") == -1 && winHash != "") {
     const dbRef = ref(database);
-    console.warn(`events/${decodedURI}`)
+    // console.warn(`events/${decodedURI}`)
     if(uid == decodedURI.split("-")[0]){
-      console.warn("lmao") //
+      // console.warn("lmao") //
     }
-    console.log(uid)
+    // console.log(uid)
     
 
     get(child(dbRef, `events/${decodedURI}`)).then((snapshot) => {
-      console.warn(snapshot.val());
+      // console.warn(snapshot.val());
       if (snapshot.exists()) {
         pageSubContainer = document.getElementById("pageSubContainer");
         if (pageSubContainer.innerHTML != "") {
           window.location.reload();
           throw "Event container had events";
         }
-        console.log(snapshot.val());
+        // console.log(snapshot.val());
         snapshot.val().dates.forEach(date => {
           if(!(uid == decodedURI.split("-")[0])){
             addCalendarBox(date).addEventListener("click", () => {
@@ -301,39 +301,39 @@ function initiate() {
           snapshot.val().dates.forEach(date => {
             results[date] = addCalendarResultBox(date);
           });
-          console.log(snapshot.val().eventResponses)
+          // console.log(snapshot.val().eventResponses)
           for (let [key, value] of Object.entries(snapshot.val().eventResponses)) {
             for (let [key2, value2] of Object.entries(value)) {
-              console.log(key2);
-              console.log(value2);
+              // console.log(key2);
+              // console.log(value2);
               if(results[key2]){
                 results[key2].innerText = parseInt(results[key2].innerText) + (value2 ? 1 : 0);
               }
             }
           }
-          console.warn(results)
+          // console.warn(results)
         }
 
       } else {
-        console.log("No data available");
+        // console.log("No data available");
       }
     }).catch((error) => {
       console.error(error);
     });
 
     get(child(dbRef, `events/${decodedURI}/eventResponses`)).then((snapshot) => {
-      console.warn(snapshot.val());
+      // console.warn(snapshot.val());
       if (snapshot.exists()) {
-        console.log(snapshot.val()[uid]);
+        // console.log(snapshot.val()[uid]);
         for (const item in snapshot.val()[uid]) {
           document.getElementById(item).checked = snapshot.val()[uid][item];
         }
         // snapshot.val()[uid].forEach(element => {
-        //   console.log(element)
+          //  console.log(element)
         // });
 
       } else {
-        console.log("No data available");
+        // console.log("No data available");
       }
     }).catch((error) => {
       console.error(error);
