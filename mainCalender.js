@@ -15,6 +15,20 @@ function init() {
     tempdiv.firstChild.innerText = pageHash.substring(pageHash.indexOf("-")+1);
     tempdiv.firstChild.id = "eventTitle"
     pageContainer.insertBefore(tempdiv, pageContainer.firstChild);
+    let tempP = document.createElement("p");
+    tempP.innerText = "Share this link with people: ";
+    tempP.onclick = function(){
+        navigator.clipboard.writeText(window.location.href);
+        alert("Copied!");
+    }
+    let tempLink = document.createElement("b");
+    tempLink.innerText = window.location.href;
+    tempLink.onclick = function(){
+        navigator.clipboard.writeText(window.location.href);
+        alert("Copied!");
+    }
+    pageSubContainer.after(tempP)
+    tempP.after(tempLink)
 }
 
 function addCalendarBox(element) {
