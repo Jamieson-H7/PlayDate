@@ -40,18 +40,6 @@ window.mobileCheck = function() {
   return check;
 };
 
-// createUserWithEmailAndPassword(auth, prompt("email"), prompt("password"))
-//   .then((userCredential) => {
-//     // Signed up 
-//     const user = userCredential.user;
-//     // ...
-//   })
-//   .catch((error) => {
-//     const errorCode = error.code;
-//     const errorMessage = error.message;
-//     // ..
-//   });
-
 function popUpSignIn() {
   setPersistence(auth, browserLocalPersistence).then(() => {
     //!window.mobileCheck()
@@ -78,28 +66,6 @@ function popUpSignIn() {
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
-        // signInWithRedirect(auth, googleProvider);
-        // return getRedirectResult(auth)
-        //   .then((result) => {
-        //     // This gives you a Google Access Token. You can use it to access Google APIs.
-        //     const credential = GoogleAuthProvider.credentialFromResult(result);
-        //     const token = credential.accessToken;
-
-        //     // The signed-in user info.
-        //     const user = result.user;
-        //     // IdP data available using getAdditionalUserInfo(result)
-        //     // ...
-        //     document.getElementById("mobileDebug").innerText += " " + error.code + " | " + error.message
-        //   }).catch((error) => {
-        //     // Handle Errors here.
-        //     const errorCode = error.code;
-        //     const errorMessage = error.message;
-        //     // The email of the user's account used.
-        //     const email = error.customData.email;
-        //     // The AuthCredential type that was used.
-        //     const credential = GoogleAuthProvider.credentialFromError(error);
-        //     // ...
-        //   });
       });
     }
     else{
@@ -127,13 +93,6 @@ function popUpSignIn() {
       });
     }
   })
-}
-if (window.location.pathname.indexOf("main.html") == -1) {
-  signOut(auth).then(() => {
-    // Sign-out successful.
-  }).catch((error) => {
-    // An error happened.
-  });
 }
 
 onAuthStateChanged(auth, (user) => {
